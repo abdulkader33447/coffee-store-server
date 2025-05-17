@@ -83,10 +83,36 @@ async function run() {
     });
 
     // user related APIs
+    app.get("/users", async (req, res) => {
+      const result = await usersCollection.find().toArray();
+      res.send(result);
+    });
+
     app.post("/users", async (req, res) => {
       const userProfile = req.body;
       console.log(userProfile);
       const result = await usersCollection.insertOne(userProfile);
+      res.send(result);
+    });
+
+    // update last signin time when signin form submit
+    app.patch("/users", async (req, res) => {
+      // console.log(req.body);
+      const {email,lastSignInTime}= req.body;
+      const filter = {email:email}
+      const updateDoc={
+        $set:{
+          lastSignInTime:lastSignInTime
+        }
+      }
+      const result = await usersCollection.updateOne(filter,updateDoc);
+      res.send(result)
+    });
+
+    app.delete("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await usersCollection.deleteOne(query);
       res.send(result);
     });
 
