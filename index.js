@@ -98,15 +98,15 @@ async function run() {
     // update last signin time when signin form submit
     app.patch("/users", async (req, res) => {
       // console.log(req.body);
-      const {email,lastSignInTime}= req.body;
-      const filter = {email:email}
-      const updateDoc={
-        $set:{
-          lastSignInTime:lastSignInTime
-        }
-      }
-      const result = await usersCollection.updateOne(filter,updateDoc);
-      res.send(result)
+      const { email, lastSignInTime } = req.body;
+      const filter = { email: email };
+      const updateDoc = {
+        $set: {
+          lastSignInTime: lastSignInTime,
+        },
+      };
+      const result = await usersCollection.updateOne(filter, updateDoc);
+      res.send(result);
     });
 
     app.delete("/users/:id", async (req, res) => {
